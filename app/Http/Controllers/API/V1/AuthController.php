@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 
+use App\Tools\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -13,20 +16,10 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
 
-    public function register(Request $request){
+    public function register(RegisterRequest $request){
 
         $token = "";
         $user = "";
-
-        $validator = Validator::make($request->all(),[
-            'name'=>'required|string',
-            'email'=>'required|string|email|unique:users',
-            'password'=>'required|min:8'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' =>$validator->errors()],422);
-        }
 
         DB::transaction(function() use ($request, &$user, &$token){
 
@@ -39,15 +32,35 @@ class AuthController extends Controller
             $token = $user->createToken('AuthToken')->plainTextToken;
 
         });
-
-        return response()->json([
-            'message' => 'User Created, Please Login to continue.',
-            'user'=> $user,
-            'token' => $token
-        ]);
+        return Response::success('User Created, Please Login to continue', ['user' => $user, 'token'=>$token]);
     }
 
-    public function login(Request $request){}
-    public function user(Request $request){}
-    public function logout(Request $request){}
+    public function login(LoginRequest $request){
+
+        $token = "";
+
+        $user = User::where('email', $request['email'])->first();
+
+        if(!$user || !Hash::check($request->password, $user->password)){
+
+            return Response::error('Invalid login details',[],401);
+        }
+
+        DB::transaction(function() use ($user, &$token){
+
+            $token = $user->createToken('AuthToken')->plainTextToken;
+
+        });
+        return Response::success('Login Successull.', ['user' => $user, 'token'=>$token]);
+    }
+    public function user(Request $request){
+
+        return Response::success('User data found', ['user'=> $request->user()]);
+    }
+    public function logout(Request $request){
+
+        $request->user()->tokens()->delete();
+
+        return Response::success('Logged out successfully.');
+    }
 }
