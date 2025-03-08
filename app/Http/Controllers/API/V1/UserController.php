@@ -16,9 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
-
-        return Response::success('Users data found.', ['users'=> $users]);
+        return Response::success('Users data found.', ['users'=> User::paginate(10)]);
     }
 
     /**

@@ -20,11 +20,11 @@ class Create extends Component
             "status"=> "required",
         ]);
 
-        $blog = new Category();
-        $blog->user_id = Auth::user()->id;
-        $blog->title = $this->title;
-        $blog->status = $this->status;
-        $blog->save();
+        $category = new Category();
+        $category->user_id = Auth::user()->id;
+        $category->title = $this->title;
+        $category->status = $this->status;
+        $category->save();
 
 
         LivewireAlert::title('Success')
