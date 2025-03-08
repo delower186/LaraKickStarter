@@ -2,11 +2,12 @@
 
 use App\Http\Middleware\Role;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,14 +31,26 @@ return Application::configure(basePath: dirname(__DIR__))
          * custom exceptions for api response
          * @delower
          */
-        $exceptions->renderable(function (InternalErrorException $e, $request) {
+        $exceptions->renderable(function (BindingResolutionException $e, $request) {
 
             if ($request->is('api/*')) {
 
                 return response()->json([
                     'success'=> false,
-                    'message'=> 'Internal Server Error. Please try again later.'
+                    'message'=> $e->getMessage()
                 ],500);
+
+            }
+        });
+
+        $exceptions->renderable(function (MethodNotAllowedHttpException $e, $request) {
+
+            if ($request->is('api/*')) {
+
+                return response()->json([
+                    'success'=> false,
+                    'message'=> $e->getMessage()
+                ],405);
 
             }
         });
@@ -48,7 +61,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 return response()->json([
                     'success'=> false,
-                    'message'=> 'Resource you are looking for Not Found!'
+                    'message'=> $e->getMessage()
                 ],status: 404);
 
             }
@@ -60,7 +73,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 return response()->json([
                     'success'=> false,
-                    'message'=> 'Token authentication unsuccessful!'
+                    'message'=> $e->getMessage()
                 ],401);
 
             }
