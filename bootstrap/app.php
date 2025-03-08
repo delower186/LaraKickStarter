@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -42,13 +42,13 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
 
-        $exceptions->renderable(function (NotFoundResourceException $e, $request) {
+        $exceptions->renderable(function (NotFoundHttpException $e, $request) {
 
             if ($request->is('api/*')) {
 
                 return response()->json([
                     'success'=> false,
-                    'message'=> 'Internal Server Error. Please try again later.'
+                    'message'=> 'Resource you are looking for Not Found!'
                 ],status: 404);
 
             }
