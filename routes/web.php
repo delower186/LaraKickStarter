@@ -8,6 +8,8 @@ use App\Livewire\Categories\Create as CreateCategory;
 use App\Livewire\Categories\Edit as EditCategory;
 use App\Livewire\Roles\Roles;
 use App\Livewire\Permissions\Permissions;
+use App\Livewire\Permissions\Create as CreatePermission;
+use App\Livewire\Permissions\Edit as EditPermission;
 use App\Livewire\Users\Users;
 use App\Livewire\Users\Edit as EditUser;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/roles', Roles::class)->name('roles.index');
     Route::get('/permissions', Permissions::class)->name('permissions.index');
+    Route::get('/permissions/create',CreatePermission::class)->name('permissions.create');
+    Route::get('/permissions/{id}/edit',EditPermission::class)->name('permissions.edit');
 
     Route::middleware(['role:customer'])->group(function () {
 

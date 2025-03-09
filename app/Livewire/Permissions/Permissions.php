@@ -5,6 +5,7 @@ namespace App\Livewire\Permissions;
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 class Permissions extends Component
@@ -39,8 +40,10 @@ class Permissions extends Component
             return false;
         }
 
-        $permission = Permission::findOrFail($data['id']);
-        $permission->delete();
+        DB::transaction(function () use ($data) {
+            $permission = Permission::findOrFail($data['id']);
+            $permission->delete();
+        });
 
         LivewireAlert::title('Success')
         ->text('Permission deleted successfully.')
