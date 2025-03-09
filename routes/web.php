@@ -6,6 +6,8 @@ use App\Livewire\Blogs\Edit;
 use App\Livewire\Categories\Categories;
 use App\Livewire\Categories\Create as CreateCategory;
 use App\Livewire\Categories\Edit as EditCategory;
+use App\Livewire\Roles\Roles;
+use App\Livewire\Permissions\Permissions;
 use App\Livewire\Users\Users;
 use App\Livewire\Users\Edit as EditUser;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +18,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/roles', Roles::class)->name('roles.index');
+    Route::get('/permissions', Permissions::class)->name('permissions.index');
 
     Route::middleware(['role:customer'])->group(function () {
 
