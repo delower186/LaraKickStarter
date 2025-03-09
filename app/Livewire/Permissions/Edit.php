@@ -6,6 +6,7 @@ use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
+use App\Tools\Helpers;
 
 class Edit extends Component
 {
@@ -38,7 +39,7 @@ class Edit extends Component
         }else{
 
             DB::transaction(function () use ($permission) {
-                $permission->name = $this->name;
+                $permission->name = Helpers::format($this->name);
                 $permission->save();
             });
 

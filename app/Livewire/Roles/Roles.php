@@ -26,8 +26,8 @@ class Roles extends Component
     // Ask for delete confirmation
     public function confirm($id)
     {
-        LivewireAlert::title('Delete Category')
-        ->text('Are you sure you want to delete this Category?')
+        LivewireAlert::title('Delete Role')
+        ->text('Are you sure you want to delete this role?')
         ->asConfirm()
         ->onConfirm('delete', ['id' => $id])
         ->show();

@@ -6,6 +6,7 @@ use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
+use App\Tools\Helpers;
 
 class Create extends Component
 {
@@ -24,7 +25,7 @@ class Create extends Component
 
         DB::transaction(function () {
             $Permission = new Permission();
-            $Permission->name = $this->name;
+            $Permission->name = Helpers::format($this->name);
             $Permission->save();
         });
 
