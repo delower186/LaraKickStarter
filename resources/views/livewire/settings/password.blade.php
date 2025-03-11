@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Livewire\Volt\Component;
-use App\Tools\RoleManager;
 
 new class extends Component {
     public string $current_password = '';
@@ -41,7 +40,7 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('Update password')" :role="__(RoleManager::getRole())" :subheading="__('Ensure your account is using a long, random password to stay secure')">
+    <x-settings.layout :heading="__('Update password')" :role="__(auth()->user()->roles[0]->name ? auth()->user()->roles[0]->name : 'None')" :subheading="__('Ensure your account is using a long, random password to stay secure')">
         <form wire:submit="updatePassword" class="mt-6 space-y-6">
             <flux:input
                 wire:model="current_password"

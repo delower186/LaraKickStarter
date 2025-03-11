@@ -31,40 +31,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/permissions/create',CreatePermission::class)->name('permissions.create');
     Route::get('/permissions/{id}/edit',EditPermission::class)->name('permissions.edit');
 
-    Route::middleware(['role:customer'])->group(function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    //Blogs
+    Route::get('/blogs',Blogs::class)->name('blogs.index');
+    Route::get('/blogs/create',Create::class)->name('blogs.create');
+    Route::get('/blogs/{id}/edit',Edit::class)->name('blogs.edit');
+    //Categories
+    Route::get('/categories',Categories::class)->name('categories.index');
+    Route::get('/categories/create',CreateCategory::class)->name('categories.create');
+    Route::get('/categories/{id}/edit',EditCategory::class)->name('categories.edit');
+    //Users
+    Route::get('/users',Users::class)->name('users.index');
+    Route::get('/users/{id}/edit',EditUser::class)->name('users.edit');
 
-        Route::prefix('customer')->group(function () {
-            Route::view('/dashboard', 'dashboard')->name('dashboard');
-        });
 
-    });
-
-    Route::middleware(['role:admin'])->group(function () {
-
-        Route::prefix('admin')->group(function () {
-            Route::view('/dashboard', 'admin')->name('admin');
-            //Blogs
-            Route::get('/blogs',Blogs::class)->name('blogs.index');
-            Route::get('/blogs/create',Create::class)->name('blogs.create');
-            Route::get('/blogs/{id}/edit',Edit::class)->name('blogs.edit');
-            //Categories
-            Route::get('/categories',Categories::class)->name('categories.index');
-            Route::get('/categories/create',CreateCategory::class)->name('categories.create');
-            Route::get('/categories/{id}/edit',EditCategory::class)->name('categories.edit');
-            //Users
-            Route::get('/users',Users::class)->name('users.index');
-            Route::get('/users/{id}/edit',EditUser::class)->name('users.edit');
-        });
-
-    });
-
-    Route::middleware(['role:vendor'])->group(function () {
-
-        Route::prefix('vendor')->group(function () {
-            Route::view('/dashboard', 'vendor')->name('vendor');
-        });
-
-    });
 
     Route::redirect('settings', 'settings/profile');
 

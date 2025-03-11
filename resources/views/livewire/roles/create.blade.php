@@ -37,11 +37,21 @@
                 </flux:field> --}}
                 <flux:field>
                     <flux:legend>Permissions</flux:legend>
-                    <flux:description>Choose Permission(s)</flux:description>
-                    <div class="flex gap-4 *:gap-x-2">
-                        @foreach ($permissions as $permission)
-                            <flux:checkbox value="{{ $permission->name }}" wire:model.defer="selected_permissions" label="{{ $permission->name }}" />
-                        @endforeach
+                    <flux:description>Choose at least 1 Permission</flux:description>
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <tbody>
+                                @for ($i = 0; $i < $permissions->count(); $i += 4)
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        @for ($j = $i; $j < $i + 4 && $j < $permissions->count(); $j++)
+                                            <td class="px-1 py-1">
+                                                <flux:checkbox value="{{ $permissions[$j]->name }}" wire:model.defer="selected_permissions" label="{{ $permissions[$j]->name }}" />
+                                            </td>
+                                        @endfor
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
                     </div>
                 </flux:field>
                 <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" type="submit" icon="document-plus">Save</flux:button>

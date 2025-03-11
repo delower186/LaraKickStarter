@@ -5,16 +5,29 @@ namespace App\Livewire\Users;
 use App\Models\User;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class Edit extends Component
+class Edit extends Component implements HasMiddleware
 {
     public $role;
+    public $roles;
     public $status;
     public $id;
+
+    public static function middleware()
+    {
+        return[
+            new Middleware('permission:edit_user', only: ['render','update']),
+        ];
+    }
 
     public function mount($id)
     {
         $user = User::findOrFail($id);
+        $this->roles = Role::all();
         $this->role = $user->role;
         $this->status = $user->status;
         $this->id = $id;
@@ -38,10 +51,12 @@ class Edit extends Component
             ->show();
 
         }else{
-            $user->role = $this->role;
-            $user->status = $this->status;
-            $user->save();
+            DB::transaction(function () use ($user) {
+                $user->status = $this->status;
+                $user->save();
 
+                $user->syncRoles([$this->role]);
+            });
 
             LivewireAlert::title('Success')
             ->text('User updated successfully!')
@@ -51,7 +66,7 @@ class Edit extends Component
             ->timer(3000) // Dismisses after 3 seconds
             ->show();
 
-            return redirect()->back();
+            return redirect()->route('users.index');
         }
     }
 

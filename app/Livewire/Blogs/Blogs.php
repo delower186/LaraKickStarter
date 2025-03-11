@@ -7,9 +7,13 @@ use App\Models\Blog;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class Blogs extends Component
 {
+
     use WithPagination;
     protected $queryString = ['keyword'];
     public $keyword = '';
@@ -17,6 +21,8 @@ class Blogs extends Component
 
     public function render()
     {
+        // dd(auth()->user()->roles[0]->name);
+        // abort_unless(auth()->user()->can('view_blog'),403,'UnAuthorized');
 
         $blogs = Blog::orderBy("id","DESC")
                         ->where("title","LIKE","%". $this->keyword ."%")
@@ -42,10 +48,13 @@ class Blogs extends Component
             return false;
         }
 
-        $blog = Blog::findOrFail($data['id']);
-        Storage::delete($blog->image);
-        Storage::disk('uploads')->delete($blog->image);
-        $blog->delete();
+        DB::transaction(function () use ($data) {
+            $blog = Blog::findOrFail($data['id']);
+            Storage::delete($blog->image);
+            Storage::disk('uploads')->delete($blog->image);
+            $blog->delete();
+        });
+
 
         LivewireAlert::title('Success')
         ->text('Blog deleted successfully.')

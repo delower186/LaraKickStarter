@@ -1,6 +1,3 @@
-@php
-use App\Tools\RoleManager;
-@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -66,7 +63,7 @@ use App\Tools\RoleManager;
                                 </span>
 
                                 <div class="grid flex-1 text-left text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }} <flux:badge color="lime">{{ RoleManager::getRole() ?? '' }}</span>
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }} <flux:badge color="lime">{{ auth()->user()->roles[0]->name ? auth()->user()->roles[0]->name : 'None' }}</span>
                                     <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                                 </div>
                             </div>

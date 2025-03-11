@@ -6,13 +6,23 @@ use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class Users extends Component
+class Users extends Component implements HasMiddleware
 {
     use WithPagination;
     protected $queryString = ['keyword'];
     public $keyword = '';
     public $searchQuery = '';
+
+    public static function middleware()
+    {
+        return[
+            new Middleware('permission:view_user', only: ['render','search','refresh']),
+            new Middleware('permission:delete_user', only: ['delete','confirm']),
+        ];
+    }
 
     public function render()
     {

@@ -1,6 +1,3 @@
-@php
-    use App\Tools\RoleManager;
-@endphp
 <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
     <div class="flex justify-between mb-3">
         <h1 class="ml-5 mt-5 text-3xl font-bold mb-5">Users</h1>
@@ -51,7 +48,11 @@
                                     {{ $user->email }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ RoleManager::getRole($user->role) }}
+                                    @if ($user->roles->isNotEmpty())
+                                        @foreach ($user->roles as $role)
+                                        <flux:badge size="sm" color="indigo">{{ $role->name }}</flux:badge>
+                                        @endforeach
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                                     @if ($user->status == 0)
@@ -60,12 +61,12 @@
                                         <flux:badge color="green">Active</flux:badge>
                                     @endif
                                 </td>
-                                @if (!$user->role == 0)
+                                {{-- @if (!$user->role == 0) --}}
                                     <td class="px-6 py-4">
                                         <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('users.edit', $user->id) }}"></flux:button>
                                         <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $user->id }})"></flux:button>
                                     </td>
-                                @endif
+                                {{-- @endif --}}
                             </tr>
                         @endforeach
                     @endif

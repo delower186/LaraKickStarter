@@ -8,8 +8,11 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\WithFileUploads;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 
-class Create extends Component
+class Create extends Component implements HasMiddleware
 {
     use WithFileUploads;
 
@@ -21,6 +24,13 @@ class Create extends Component
     public string $content;
     public $image;
     public string $status = "1";
+
+    public static function middleware()
+    {
+        return[
+            new Middleware('permission:create_blog', only: ['render','save']),
+        ];
+    }
 
     public function save()
     {
@@ -42,14 +52,16 @@ class Create extends Component
         $imageName = time() .".". $this->image->getClientOriginalExtension();
         $saveLocation = $this->image->storeAs("images/blog", $imageName,'uploads');
 
-        $blog = new Blog();
-        $blog->user_id = Auth::user()->id;
-        $blog->category_id = (int)$this->category;
-        $blog->title = $this->title;
-        $blog->content = $this->content;
-        $blog->image = $saveLocation;
-        $blog->status = $this->status;
-        $blog->save();
+        DB::transaction(function () use ($saveLocation) {
+            $blog = new Blog();
+            $blog->user_id = Auth::user()->id;
+            $blog->category_id = (int)$this->category;
+            $blog->title = $this->title;
+            $blog->content = $this->content;
+            $blog->image = $saveLocation;
+            $blog->status = $this->status;
+            $blog->save();
+        });
 
         LivewireAlert::title('Success')
         ->text('Blog created successfully!')
@@ -70,6 +82,6 @@ class Create extends Component
     public function mount()
     {
        $this->author = Auth::user()->name;
-       $this->categories = Category::all();
+       $this->categories = Category::where('status','=','1')->get();
     }
 }

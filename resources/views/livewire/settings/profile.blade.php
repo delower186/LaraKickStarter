@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
-use App\Tools\RoleManager;
 
 new class extends Component {
     public string $name = '';
@@ -74,7 +73,7 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('Profile')" :role="__(RoleManager::getRole())" :subheading="__('Update your name and email address')">
+    <x-settings.layout :heading="__('Profile')" :role="__(auth()->user()->roles[0]->name ? auth()->user()->roles[0]->name : 'None')" :subheading="__('Update your name and email address')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
             <flux:input wire:model="name" :label="__('Name')" type="text" name="name" required autofocus autocomplete="name" />
 

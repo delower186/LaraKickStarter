@@ -10,10 +10,11 @@
                 <flux:field>
                     <flux:label>Role</flux:label>
                     <flux:select wire:model="role">
-                        <flux:select.option>Choose role...</flux:select.option>
-                        <flux:select.option value="0">Admin</flux:select.option>
-                        <flux:select.option value="1">Vendor</flux:select.option>
-                        <flux:select.option value="2">Customer</flux:select.option>
+                        @if ($roles->isNotEmpty())
+                            @foreach ($roles as $role)
+                                <flux:select.option value="{{ $role->name }}">{{ $role->name }}</flux:select.option>
+                            @endforeach
+                        @endif
                     </flux:select>
                     <flux:error name="role" />
                 </flux:field>

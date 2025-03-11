@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 
-class Edit extends Component
+class Edit extends Component implements HasMiddleware
 {
     use WithFileUploads;
     public $title;
@@ -24,9 +27,16 @@ class Edit extends Component
     public $status;
     public $id;
 
+    public static function middleware()
+    {
+        return[
+            new Middleware('permission:edit_blog', only: ['render','update']),
+        ];
+    }
+
     public function mount($id)
     {
-        $this->categories = Category::all();
+        $this->categories = Category::where('status','=','1')->get();
         $blog = Blog::findOrFail($id);
         $this->title = $blog->title;
         $this->content = $blog->content;

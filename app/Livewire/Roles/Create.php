@@ -7,7 +7,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
-
+use App\Tools\Helpers;
 
 class Create extends Component
 {
@@ -30,7 +30,7 @@ class Create extends Component
 
         DB::transaction(function ()  {
             $role = new Role();
-            $role->name = strtolower($this->name);
+            $role->name = Helpers::format($this->name, '-');
             $role->save();
 
             // $role->permissions()->sync($this->selected_permissions);

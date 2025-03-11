@@ -4,9 +4,9 @@ namespace App\Tools;
 
 class Helpers{
 
-    public static function format($text)
+    public static function format($text, $separator = "_")
     {
-        return str_replace(' ', '_', strtolower(trim($text)));
+        return str_replace(' ', $separator, strtolower(trim($text)));
     }
 
 }

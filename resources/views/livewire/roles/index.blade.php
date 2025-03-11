@@ -46,7 +46,9 @@
                                     {{ $role->name }}
                                 </td>
                                 <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                    @if ($role->permissions->isNotEmpty())
+                                    @if($role->name === 'super-admin')
+                                        <flux:badge color="red" icon="star" size="sm">ALL</flux:badge>
+                                    @elseif ($role->permissions->isNotEmpty())
 
                                         @foreach ( $role->permissions as $permission)
                                             <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">{{ $permission->name }}</span>
@@ -66,8 +68,12 @@
                                     @endif
                                 </td> --}}
                                 <td class="px-6 py-4">
-                                    <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('roles.edit', $role->id) }}"></flux:button>
-                                    <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $role->id }})"></flux:button>
+                                    @if ($role->name === 'super-admin')
+                                        <flux:badge color="red" icon="exclamation-circle" size="sm">NONE</flux:badge>
+                                    @else
+                                        <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('roles.edit', $role->id) }}"></flux:button>
+                                        <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $role->id }})"></flux:button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
