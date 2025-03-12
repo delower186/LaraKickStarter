@@ -4,6 +4,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
@@ -75,6 +76,18 @@ return Application::configure(basePath: dirname(__DIR__))
                     'success'=> false,
                     'message'=> $e->getMessage()
                 ],401);
+
+            }
+        });
+
+        $exceptions->renderable(function (AccessDeniedHttpException $e, $request) {
+
+            if ($request->is('api/*')) {
+
+                return response()->json([
+                    'success'=> false,
+                    'message'=> $e->getMessage()
+                ],403);
 
             }
         });

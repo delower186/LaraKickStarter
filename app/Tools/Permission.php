@@ -27,7 +27,7 @@ class Permission{
             abort(404);
         }
 
-        if (!in_array($permissionFormatted, Perm::all())) {
+        if (!in_array($permissionFormatted, Perm::all()->pluck("name")->toArray())) {
             abort(404);
         }
     }
