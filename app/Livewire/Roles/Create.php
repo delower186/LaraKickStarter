@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Permission;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use App\Tools\Helpers;
+use App\Tools\Permission as Perm;
 
 class Create extends Component
 {
@@ -22,6 +23,8 @@ class Create extends Component
 
     public function save()
     {
+        $this->authorize(Perm::format('create','role'), Role::class);
+
         $this->validate([
             "name"=> "required|unique:roles|string|min:5",
             "selected_permissions"=>"required"
@@ -52,6 +55,7 @@ class Create extends Component
 
     public function render()
     {
+        $this->authorize(Perm::format('create','role'), Role::class);
         return view('livewire.roles.create');
     }
 }

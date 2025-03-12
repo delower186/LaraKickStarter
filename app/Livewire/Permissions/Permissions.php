@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Permission;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use App\Tools\Permission as Perm;
 
 class Permissions extends Component
 {
@@ -17,6 +18,8 @@ class Permissions extends Component
 
     public function render()
     {
+        $this->authorize(Perm::format('view','permission'), Permission::class);
+
         $permissions = Permission::orderBy("id","DESC")
         ->where("name","LIKE","%". $this->keyword ."%")
         ->paginate(10);
@@ -27,6 +30,8 @@ class Permissions extends Component
     // Ask for delete confirmation
     public function confirm($id)
     {
+        $this->authorize(Perm::format('delete','permission'), Permission::class);
+
         LivewireAlert::title('Delete Permission')
         ->text('Are you sure you want to delete this Permission?')
         ->asConfirm()
@@ -36,6 +41,8 @@ class Permissions extends Component
 
     public function delete($data)
     {
+        $this->authorize(Perm::format('delete','permission'), Permission::class);
+
         if($data['value'] === false){
             return false;
         }
@@ -58,6 +65,8 @@ class Permissions extends Component
 
     public function search()
     {
+        $this->authorize(Perm::format('view','permission'), Permission::class);
+
         if($this->searchQuery != "") {
             $this->keyword = trim($this->searchQuery);
 
@@ -82,6 +91,8 @@ class Permissions extends Component
 
     public function refresh()
     {
+        $this->authorize(Perm::format('view','permission'), Permission::class);
+
         return redirect()->route("permissions.index");
     }
 }

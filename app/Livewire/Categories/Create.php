@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Support\Facades\DB;
+use App\Tools\Permission;
 
 class Create extends Component
 {
@@ -15,17 +17,19 @@ class Create extends Component
 
     public function save()
     {
+        $this->authorize(Permission::format('create','category'), Category::class);
+
         $this->validate([
             "title"=> "required|min:5",
             "status"=> "required",
         ]);
-
-        $category = new Category();
-        $category->user_id = Auth::user()->id;
-        $category->title = $this->title;
-        $category->status = $this->status;
-        $category->save();
-
+        DB::transaction(function () {
+            $category = new Category();
+            $category->user_id = Auth::user()->id;
+            $category->title = $this->title;
+            $category->status = $this->status;
+            $category->save();
+        });
 
         LivewireAlert::title('Success')
         ->text('Category created successfully!')
@@ -41,6 +45,8 @@ class Create extends Component
 
     public function render()
     {
+        $this->authorize(Permission::format('create','category'), Category::class);
+
         return view('livewire.categories.create');
     }
 

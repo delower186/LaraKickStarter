@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Permission;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use App\Tools\Helpers;
+use App\Tools\Permission as Perm;
 
 class Edit extends Component
 {
@@ -22,6 +23,8 @@ class Edit extends Component
 
     public function update()
     {
+        $this->authorize(Perm::format('update','permission'), Permission::class);
+
         $this->validate([
             "name"=> "required|min:5",
         ]);
@@ -58,6 +61,8 @@ class Edit extends Component
 
     public function render()
     {
+        $this->authorize(Perm::format('update','permission'), Permission::class);
+
         return view('livewire.permissions.edit');
     }
 }

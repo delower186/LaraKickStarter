@@ -6,6 +6,7 @@ use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use App\Tools\Permission;
 
 class Roles extends Component
 {
@@ -16,6 +17,8 @@ class Roles extends Component
 
     public function render()
     {
+        $this->authorize(Permission::format('view','role'), Role::class);
+
         $roles = Role::orderBy("id","DESC")
         ->where("name","LIKE","%". $this->keyword ."%")
         ->paginate(10);
@@ -26,6 +29,7 @@ class Roles extends Component
     // Ask for delete confirmation
     public function confirm($id)
     {
+        $this->authorize(Permission::format('delete','role'), Role::class);
         LivewireAlert::title('Delete Role')
         ->text('Are you sure you want to delete this role?')
         ->asConfirm()
@@ -35,6 +39,8 @@ class Roles extends Component
 
     public function delete($data)
     {
+        $this->authorize(Permission::format('delete','role'), Role::class);
+
         if($data['value'] === false){
             return false;
         }
@@ -55,6 +61,7 @@ class Roles extends Component
 
     public function search()
     {
+        $this->authorize(Permission::format('view','role'), Role::class);
         if($this->searchQuery != "") {
             $this->keyword = trim($this->searchQuery);
 
@@ -79,6 +86,7 @@ class Roles extends Component
 
     public function refresh()
     {
+        $this->authorize(Permission::format('view','role'), Role::class);
         return redirect()->route("roles.index");
     }
 }

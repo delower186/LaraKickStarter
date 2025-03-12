@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Support\Facades\DB;
+use App\Tools\Permission;
 
 class Categories extends Component
 {
@@ -16,6 +18,8 @@ class Categories extends Component
 
     public function render()
     {
+        $this->authorize(Permission::format('view','category'), Category::class);
+
         $categories = Category::orderBy("id","DESC")
                 ->where("title","LIKE","%". $this->keyword ."%")
                 ->paginate(10);
@@ -26,6 +30,8 @@ class Categories extends Component
     // Ask for delete confirmation
     public function confirm($id)
     {
+        $this->authorize(Permission::format('delete','category'), Category::class);
+
         LivewireAlert::title('Delete Category')
         ->text('Are you sure you want to delete this Category?')
         ->asConfirm()
@@ -35,12 +41,15 @@ class Categories extends Component
 
     public function delete($data)
     {
+        $this->authorize(Permission::format('delete','category'), Category::class);
+
         if($data['value'] === false){
             return false;
         }
-
-        $category = Category::findOrFail($data['id']);
-        $category->delete();
+        DB::transaction(function () use ($data) {
+            $category = Category::findOrFail($data['id']);
+            $category->delete();
+        });
 
         LivewireAlert::title('Success')
         ->text('Category deleted successfully.')
@@ -55,6 +64,8 @@ class Categories extends Component
 
     public function search()
     {
+        $this->authorize(Permission::format('view','category'), Category::class);
+
         if($this->searchQuery != "") {
             $this->keyword = trim($this->searchQuery);
 
@@ -79,6 +90,8 @@ class Categories extends Component
 
     public function refresh()
     {
+        $this->authorize(Permission::format('view','category'), Category::class);
+
         return redirect()->route("categories.index");
     }
 }

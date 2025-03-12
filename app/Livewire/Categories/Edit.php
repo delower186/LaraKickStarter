@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Illuminate\Support\Facades\DB;
+use App\Tools\Permission;
 
 class Edit extends Component
 {
@@ -26,6 +28,8 @@ class Edit extends Component
 
     public function update()
     {
+        $this->authorize(Permission::format('update','category'), Category::class);
+
         $this->validate([
             "title"=> "required|min:5",
             "status"=> "required|string",
@@ -42,11 +46,12 @@ class Edit extends Component
             ->show();
 
         }else{
-
-            $category->user_id = Auth::user()->id;
-            $category->title = $this->title;
-            $category->status = $this->status;
-            $category->save();
+            DB::transaction(function () use ($category){
+                $category->user_id = Auth::user()->id;
+                $category->title = $this->title;
+                $category->status = $this->status;
+                $category->save();
+            });
 
 
             LivewireAlert::title('Success')
@@ -64,6 +69,7 @@ class Edit extends Component
 
     public function render()
     {
+        $this->authorize(Permission::format('update','category'), Category::class);
         return view('livewire.categories.edit');
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Tools\Permission;
 
 
 class Blogs extends Component
@@ -19,22 +20,22 @@ class Blogs extends Component
     public $keyword = '';
     public $searchQuery = '';
 
+
     public function render()
     {
-        // dd(auth()->user()->roles[0]->name);
-        // abort_unless(auth()->user()->can('view_blog'),403,'UnAuthorized');
+        $this->authorize(Permission::format('view','blog'), Blog::class);
 
         $blogs = Blog::orderBy("id","DESC")
                         ->where("title","LIKE","%". $this->keyword ."%")
                         ->orWhere("content","LIKE","%". $this->keyword ."%")
                         ->paginate(10);
-
         return view('livewire.blogs.index', compact('blogs'));
     }
 
     // Ask for delete confirmation
     public function confirm($id)
     {
+        $this->authorize(Permission::format('delete','blog'), Blog::class);
         LivewireAlert::title('Delete Blog')
         ->text('Are you sure you want to delete this blog?')
         ->asConfirm()
@@ -44,12 +45,14 @@ class Blogs extends Component
 
     public function delete($data)
     {
+        $this->authorize(Permission::format('delete','blog'), Blog::class);
+
         if($data['value'] === false){
             return false;
         }
+        $blog = Blog::findOrFail($data['id']);
+        DB::transaction(function () use ($blog) {
 
-        DB::transaction(function () use ($data) {
-            $blog = Blog::findOrFail($data['id']);
             Storage::delete($blog->image);
             Storage::disk('uploads')->delete($blog->image);
             $blog->delete();
@@ -69,6 +72,8 @@ class Blogs extends Component
 
     public function search()
     {
+        $this->authorize(Permission::format('view','blog'), Blog::class);
+
         if($this->searchQuery != "") {
             $this->keyword = trim($this->searchQuery);
 
@@ -91,6 +96,7 @@ class Blogs extends Component
 
     public function refresh()
     {
+        $this->authorize(Permission::format('view','blog'), Blog::class);
         return redirect()->route("blogs.index");
     }
 }

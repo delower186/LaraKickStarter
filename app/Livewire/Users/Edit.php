@@ -7,22 +7,14 @@ use Livewire\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
+use App\Tools\Permission;
 
-class Edit extends Component implements HasMiddleware
+class Edit extends Component
 {
     public $role;
     public $roles;
     public $status;
     public $id;
-
-    public static function middleware()
-    {
-        return[
-            new Middleware('permission:edit_user', only: ['render','update']),
-        ];
-    }
 
     public function mount($id)
     {
@@ -35,6 +27,8 @@ class Edit extends Component implements HasMiddleware
 
     public function update()
     {
+        $this->authorize(Permission::format('update','user'), User::class);
+
         $this->validate([
             "role"=> "required",
             "status"=> "required",
@@ -72,6 +66,7 @@ class Edit extends Component implements HasMiddleware
 
     public function render()
     {
+        $this->authorize(Permission::format('update','user'), User::class);
         return view('livewire.users.edit');
     }
 }

@@ -8,11 +8,10 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\WithFileUploads;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
+use App\Tools\Permission;
 
-class Create extends Component implements HasMiddleware
+class Create extends Component
 {
     use WithFileUploads;
 
@@ -25,15 +24,9 @@ class Create extends Component implements HasMiddleware
     public $image;
     public string $status = "1";
 
-    public static function middleware()
-    {
-        return[
-            new Middleware('permission:create_blog', only: ['render','save']),
-        ];
-    }
-
     public function save()
     {
+        $this->authorize(Permission::format('create','blog'), Blog::class);
 
         $this->validate([
             "title"=> "required|min:5",
@@ -51,9 +44,9 @@ class Create extends Component implements HasMiddleware
          */
         $imageName = time() .".". $this->image->getClientOriginalExtension();
         $saveLocation = $this->image->storeAs("images/blog", $imageName,'uploads');
+        $blog = new Blog();
 
-        DB::transaction(function () use ($saveLocation) {
-            $blog = new Blog();
+        DB::transaction(function () use ($saveLocation, $blog) {
             $blog->user_id = Auth::user()->id;
             $blog->category_id = (int)$this->category;
             $blog->title = $this->title;
@@ -76,6 +69,7 @@ class Create extends Component implements HasMiddleware
 
     public function render()
     {
+        $this->authorize(Permission::format('create','blog'), Blog::class);
         return view('livewire.blogs.create');
     }
 

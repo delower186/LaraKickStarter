@@ -10,7 +10,7 @@
     <flux:separator class="md:hidden" />
 
     <div class="flex-1 self-stretch max-md:pt-6">
-        <flux:heading>{{ $heading ?? '' }} <flux:badge color="lime">{{ 'replace' }}</flux:badge></flux:heading>
+        <flux:heading>{{ $heading ?? '' }} <flux:badge color="lime">{{ auth()->user()->roles[0]->name ? auth()->user()->roles[0]->name : 'None' }}</flux:badge></flux:heading>
         <flux:subheading>{{ $subheading ?? '' }}</flux:subheading>
 
         <div class="mt-5 w-full max-w-lg">

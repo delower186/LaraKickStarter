@@ -6,26 +6,19 @@ use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
+use App\Tools\Permission;
 
-class Users extends Component implements HasMiddleware
+class Users extends Component
 {
     use WithPagination;
     protected $queryString = ['keyword'];
     public $keyword = '';
     public $searchQuery = '';
 
-    public static function middleware()
-    {
-        return[
-            new Middleware('permission:view_user', only: ['render','search','refresh']),
-            new Middleware('permission:delete_user', only: ['delete','confirm']),
-        ];
-    }
-
     public function render()
     {
+        $this->authorize(Permission::format('view','user'), User::class);
+
         $users = User::orderBy("id","DESC")
         ->where("name","LIKE","%". $this->keyword ."%")
         ->paginate(10);
@@ -37,6 +30,7 @@ class Users extends Component implements HasMiddleware
     // Ask for delete confirmation
     public function confirm($id)
     {
+        $this->authorize(Permission::format('delete','user'), User::class);
         LivewireAlert::title('Delete User')
         ->text('Are you sure you want to delete this user?')
         ->asConfirm()
@@ -46,6 +40,8 @@ class Users extends Component implements HasMiddleware
 
     public function delete($data)
     {
+        $this->authorize(Permission::format('delete','user'), User::class);
+
         if($data['value'] === false){
             return false;
         }
@@ -66,6 +62,8 @@ class Users extends Component implements HasMiddleware
 
     public function search()
     {
+        $this->authorize(Permission::format('view','user'), User::class);
+
         if($this->searchQuery != "") {
             $this->keyword = trim($this->searchQuery);
 
@@ -90,6 +88,8 @@ class Users extends Component implements HasMiddleware
 
     public function refresh()
     {
+        $this->authorize(Permission::format('view','user'), User::class);
+
         return redirect()->route("users.index");
     }
 }
