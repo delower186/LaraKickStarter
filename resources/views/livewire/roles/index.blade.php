@@ -55,8 +55,8 @@
                                             <flux:badge color="red" icon="star" size="sm">ALL</flux:badge>
                                         @elseif ($role->permissions->isNotEmpty())
 
-                                            @foreach ( $role->permissions as $permission)
-                                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">{{ $permission->name }}</span>
+                                            @foreach ( $role->permissions as $perm)
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">{{ $perm->name }}</span>
                                             @endforeach
 
                                         @endif

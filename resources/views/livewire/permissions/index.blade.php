@@ -39,13 +39,13 @@
                 <tbody>
                     @can($permission->format('view', 'permission'))
                         @if ($permissions->isNotEmpty())
-                            @foreach ($permissions as $permission)
+                            @foreach ($permissions as $perm)
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $permission->id }}
+                                        {{ $perm->id }}
                                     </th>
                                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                        {{ $permission->name }}
+                                        {{ $perm->name }}
                                     </td>
                                     {{-- <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                                         {{ $role->user->name }}
@@ -59,10 +59,10 @@
                                     </td> --}}
                                     <td class="px-6 py-4">
                                         @can($permission->format('update', 'permission'))
-                                            <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('permissions.edit', $permission->id) }}"></flux:button>
+                                            <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('permissions.edit', $perm->id) }}"></flux:button>
                                         @endcan
                                         @can($permission->format('delete', 'permission'))
-                                            <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $permission->id }})"></flux:button>
+                                            <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $perm->id }})"></flux:button>
                                         @endcan
                                     </td>
                                 </tr>

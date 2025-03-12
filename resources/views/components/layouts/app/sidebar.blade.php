@@ -15,29 +15,29 @@
                     <flux:navlist.group heading="Platform" class="grid">
                         <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     </flux:navlist.group>
-                    <flux:navlist.group expandable heading="CMS" class="hidden lg:grid">
-                        @can($permission->format('view','blog'))
+                    @can($permission->format('view','blog'))
+                        <flux:navlist.group expandable heading="CMS" class="hidden lg:grid">
                             <flux:navlist.item icon="pencil-square" :href="route('blogs.index')" :current="request()->routeIs('blogs.index')" wire:navigate>{{ __('Blogs') }}</flux:navlist.item>
-                        @endcan
-                        @can($permission->format('view','category'))
-                            <flux:navlist.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.index')" wire:navigate>{{ __('Categories') }}</flux:navlist.item>
-                        @endcan
-                    </flux:navlist.group>
+                            @can($permission->format('view','category'))
+                                <flux:navlist.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.index')" wire:navigate>{{ __('Categories') }}</flux:navlist.item>
+                            @endcan
+                        </flux:navlist.group>
+                    @endcan
                 </flux:navlist>
             <flux:spacer />
 
             <flux:navlist variant="outline">
-                <flux:navlist.group expandable heading="Users" class="hidden lg:grid">
-                    @can($permission->format('view','user'))
+                @can($permission->format('view','user'))
+                    <flux:navlist.group expandable heading="Users" class="hidden lg:grid">
                         <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.index')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
-                    @endcan
-                    @can($permission->format('view','role'))
-                        <flux:navlist.item icon="academic-cap" :href="route('roles.index')" :current="request()->routeIs('roles.index')" wire:navigate>{{ __('Roles') }}</flux:navlist.item>
-                    @endcan
-                    @can($permission->format('view','permission'))
-                        <flux:navlist.item icon="key" :href="route('permissions.index')" :current="request()->routeIs('permissions.index')" wire:navigate>{{ __('Permissions') }}</flux:navlist.item>
-                    @endcan
-                </flux:navlist.group>
+                        @can($permission->format('view','role'))
+                            <flux:navlist.item icon="academic-cap" :href="route('roles.index')" :current="request()->routeIs('roles.index')" wire:navigate>{{ __('Roles') }}</flux:navlist.item>
+                        @endcan
+                        @can($permission->format('view','permission'))
+                            <flux:navlist.item icon="key" :href="route('permissions.index')" :current="request()->routeIs('permissions.index')" wire:navigate>{{ __('Permissions') }}</flux:navlist.item>
+                        @endcan
+                    </flux:navlist.group>
+                @endcan
                 <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
                 {{ __('Documentation') }}
                 </flux:navlist.item>
@@ -64,7 +64,7 @@
                                 </span>
 
                                 <div class="grid flex-1 text-left text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }} <flux:badge color="lime">{{ auth()->user()->roles[0]->name ? auth()->user()->roles[0]->name : 'None' }}</flux:badge></span>
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }} @if(auth()->user()->roles->isNOtEmpty()) <flux:badge color="lime">{{auth()->user()->roles[0]->name}}</flux:badge></span>@endif
                                     <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                 </span>
 
                                 <div class="grid flex-1 text-left text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }} <flux:badge color="lime">{{ auth()->user()->roles[0]->name ? auth()->user()->roles[0]->name : 'None' }}</flux:badge></span>
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }} @if(auth()->user()->roles->isNOtEmpty()) <flux:badge color="lime">{{auth()->user()->roles[0]->name}}</flux:badge></span>@endif
                                     <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                                 </div>
                             </div>

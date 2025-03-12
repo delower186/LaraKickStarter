@@ -55,6 +55,8 @@
                                             @foreach ($user->roles as $role)
                                             <flux:badge size="sm" color="indigo">{{ $role->name }}</flux:badge>
                                             @endforeach
+                                        @else
+                                            <flux:badge size="sm" color="red">NONE</flux:badge>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">

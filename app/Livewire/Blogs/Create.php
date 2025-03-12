@@ -32,7 +32,7 @@ class Create extends Component
             "title"=> "required|min:5",
             "category"=>"required|string",
             "content"=> "required|min:100",
-            "image"=> "nullable|image|mimes:png,jpg|max:2048",
+            "image"=> "sometimes|required|image|mimes:png,jpg|max:2048",
             "status"=> "required",
         ]);
 
