@@ -20,7 +20,7 @@ class Permission{
         $resources = array_map('strtolower', self::$resources);
 
         if (in_array($resource, $resources)) {
-            $permissionFormatted = $permission."_". $resource;
+            $permissionFormatted = $resource.".". $permission;
 
             return $permissionFormatted;
         }else{

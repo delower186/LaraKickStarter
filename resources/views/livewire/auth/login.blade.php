@@ -48,21 +48,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
         ->position('top-end')
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
-        /*
-         *
-         * Redirect based on user role
-         *
-         * by Delower
-         *
-         */
-        if (Auth::user()->role === 0){
-            $this->redirectIntended(default: route('admin', absolute: false), navigate: true);
-        }else if(Auth::user()->role === 1){
-            $this->redirectIntended(default: route('vendor', absolute: false), navigate: true);
-        }else{
-            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
-        }
-
     }
 
     /**
