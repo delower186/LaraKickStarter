@@ -11,6 +11,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use App\Rules\Recaptcha;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     #[Validate('required|string|email')]
@@ -22,10 +23,17 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public bool $remember = false;
 
     /**
+     * Recaptcha Token
+     */
+    #[Validate(['recaptcha_token' => ['required', new Recaptcha]])]
+    public $recaptcha_token;
+
+    /**
      * Handle an incoming authentication request.
      */
     public function login(): void
     {
+
         $this->validate();
 
         $this->ensureIsNotRateLimited();
@@ -38,16 +46,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
             ]);
         }
 
-        RateLimiter::clear($this->throttleKey());
-        Session::regenerate();
-
-        LivewireAlert::title('Success')
-        ->text('Login Successfull! Redirecting to Dashboard...')
-        ->success()
-        ->toast()
-        ->position('top-end')
-        ->timer(3000) // Dismisses after 3 seconds
-        ->show();
         /*
          *
          * Redirect based on user role
@@ -55,7 +53,30 @@ new #[Layout('components.layouts.auth')] class extends Component {
          * by Delower
          *
          */
-        if (Auth::user()){
+        if (!Auth::user()->status > 0){
+
+            LivewireAlert::title('Error')
+            ->text('Your Account is Inactive, Please contact support...')
+            ->error()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000) // Dismisses after 3 seconds
+            ->show();
+
+            Auth::logout();
+
+        }else{
+            RateLimiter::clear($this->throttleKey());
+            Session::regenerate();
+
+            LivewireAlert::title('Success')
+            ->text('Login Successfull! Redirecting to Dashboard...')
+            ->success()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000) // Dismisses after 3 seconds
+            ->show();
+
             $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
         }
 
@@ -97,7 +118,16 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="login" class="flex flex-col gap-6">
+    <form wire:submit.prevent="login" class="flex flex-col gap-6" x-data="{ siteKey: @js(config('services.recaptcha.public_key')), token: '' }" x-init="grecaptcha.ready(() => {
+            $el.addEventListener('submit', (e) => {
+                e.preventDefault();
+                grecaptcha.execute(siteKey, { action: 'login' }).then(t => {
+                    token = t;
+                    $wire.recaptcha_token = t;
+                    $wire.login(); // trigger Livewire after token is set
+                });
+            });
+        })">
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -129,6 +159,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
             @endif
         </div>
 
+        <!-- Recaptcha Field -->
+        <input type="hidden" x-model="token" x-effect="$wire.recaptcha_token = token">
+
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" :label="__('Remember me')" />
 
@@ -144,3 +177,4 @@ new #[Layout('components.layouts.auth')] class extends Component {
       </div>
     @endif
 </div>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.public_key') }}"></script>

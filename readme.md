@@ -19,7 +19,8 @@ LaraKickStarter is a modern **Laravel starter kit** designed to help developers 
 - 🔐 API-ready with Sanctum authentication  
 - 📂 Modular & scalable folder structure  
 - 🌍 Multi-language support (i18n ready)  
-- 📨 Notifications & Mail setup  
+- 📨 Notifications & Mail setup
+- 🤖 Google reCAPTCHA v3 on login & registration  
 
 ---
 
@@ -47,6 +48,7 @@ php artisan migrate --seed
 # 6. Start the server
 php artisan serve
 ```
+---
 
 ## 📖 Usage
 
@@ -56,3 +58,14 @@ php artisan serve
   - **Super Admin:** `super@super.com / password`  
   - **Admin:** `admin@admin.com / password`  
   - **User:** `user@user.com / password`
+
+---
+
+### 🔐 reCAPTCHA Setup  
+
+Please add the following lines to your `.env` file and fill them with your Google reCAPTCHA v3 keys to enable bot protection on login & registration forms:
+
+```dotenv
+RECAPTCHA_PUBLIC_KEY=
+RECAPTCHA_SECRET_KEY=
+```

@@ -29,48 +29,48 @@ class DatabaseSeeder extends Seeder
          * Role Seeder
          */
 
-        // $roles = ['Super Admin', 'Admin', 'User'];
+        $roles = ['Super Admin', 'Admin', 'User'];
 
-        // foreach ($roles as $key => $value) {
-        //     Role::create(['name' => $value]);
-        // }
+        foreach ($roles as $key => $value) {
+            Role::create(['name' => $value]);
+        }
 
         /***
          * Create User and assign role
          */
 
-        // $super = User::create([
-        //     'name' => 'Super Admin',
-        //     'email' => 'super@super.com',
-        //     'email_verified_at' => now(),
-        //     'password' => static::$password ??= Hash::make('password'),
-        //     'status' => 1,
-        //     'remember_token' => Str::random(10),
-        // ]);
+        $super = User::create([
+            'name' => 'Super Admin',
+            'email' => 'super@super.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'status' => '1',
+            'remember_token' => Str::random(10),
+        ]);
 
-        // $super->assignRole('Super Admin');
+        $super->assignRole('Super Admin');
 
-        // $admin = User::create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@admin.com',
-        //     'email_verified_at' => now(),
-        //     'password' => static::$password ??= Hash::make('password'),
-        //     'status' => 1,
-        //     'remember_token' => Str::random(10),
-        // ]);
+        $admin = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'status' => '1',
+            'remember_token' => Str::random(10),
+        ]);
 
-        // $admin->assignRole('Admin');
+        $admin->assignRole('Admin');
 
-        // $user = User::create([
-        //     'name' => 'User',
-        //     'email' => 'user@user.com',
-        //     'email_verified_at' => now(),
-        //     'password' => static::$password ??= Hash::make('password'),
-        //     'status' => 1,
-        //     'remember_token' => Str::random(10),
-        // ]);
+        $user = User::create([
+            'name' => 'User',
+            'email' => 'user@user.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'status' => '1',
+            'remember_token' => Str::random(10),
+        ]);
 
-        // $user->assignRole('User');
+        $user->assignRole('User');
 
         /***
          * Permission Seeder
