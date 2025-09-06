@@ -51,7 +51,7 @@
                                         {{ $role->name }}
                                     </td>
                                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                        @if($role->name === 'super-admin')
+                                        @if($role->name === 'Super Admin')
                                             <flux:badge color="red" icon="star" size="sm">ALL</flux:badge>
                                         @elseif ($role->permissions->isNotEmpty())
 
@@ -73,7 +73,7 @@
                                         @endif
                                     </td> --}}
                                     <td class="px-6 py-4">
-                                        @if ($role->name === 'super-admin')
+                                        @if ($role->name === 'Super Admin')
                                             <flux:badge color="red" icon="exclamation-circle" size="sm">NONE</flux:badge>
                                         @else
                                             @can($permission->format('update', 'role'))

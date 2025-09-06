@@ -66,16 +66,22 @@
                                             <flux:badge color="green">Active</flux:badge>
                                         @endif
                                     </td>
-                                    {{-- @if (!$user->role == 0) --}}
-                                        <td class="px-6 py-4">
-                                            @can($permission->format('update', 'role'))
-                                                <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('users.edit', $user->id) }}"></flux:button>
-                                            @endcan
-                                            @can($permission->format('delete', 'role'))
-                                                <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $user->id }})"></flux:button>
-                                            @endcan
-                                        </td>
-                                    {{-- @endif --}}
+                                    @foreach ($user->roles as $role)
+                                        @if ($role->name !== 'Super Admin')
+                                            <td class="px-6 py-4">
+                                                @can($permission->format('update', 'role'))
+                                                    <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('users.edit', $user->id) }}"></flux:button>
+                                                @endcan
+                                                @can($permission->format('delete', 'role'))
+                                                    <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $user->id }})"></flux:button>
+                                                @endcan
+                                            </td>
+                                        @else
+                                            <td class="px-6 py-4">
+                                                <flux:badge color="red" icon="exclamation-circle" size="sm">NONE</flux:badge>
+                                            </td>
+                                        @endif
+                                    @endforeach
                                 </tr>
                             @endforeach
                         @endif
