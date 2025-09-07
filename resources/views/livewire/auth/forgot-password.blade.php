@@ -28,7 +28,16 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
+    <form wire:submit.prevent="sendPasswordResetLink" class="flex flex-col gap-6" x-data="{ siteKey: @js(config('services.recaptcha.public_key')), token: '' }" x-init="grecaptcha.ready(() => {
+            $el.addEventListener('submit', (e) => {
+                e.preventDefault();
+                grecaptcha.execute(siteKey, { action: 'sendPasswordResetLink' }).then(t => {
+                    token = t;
+                    $wire.recaptcha_token = t;
+                    $wire.sendPasswordResetLink(); // trigger Livewire after token is set
+                });
+            });
+        })">
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -40,6 +49,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
             placeholder="email@example.com"
         />
 
+        <!-- Recaptcha Field -->
+        <input type="hidden" x-model="token" x-effect="$wire.recaptcha_token = token">
+
         <flux:button variant="primary" type="submit" class="w-full">{{ __('Email password reset link') }}</flux:button>
     </form>
 
@@ -48,3 +60,4 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <flux:link :href="route('login')" wire:navigate>log in</flux:link>
     </div>
 </div>
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.public_key') }}"></script>

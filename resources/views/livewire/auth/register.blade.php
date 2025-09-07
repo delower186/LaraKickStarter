@@ -51,7 +51,16 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit.prevent="register" class="flex flex-col gap-6" x-data="{ siteKey: @js(config('services.recaptcha.public_key')), token: '' }" x-init="grecaptcha.ready(function() { grecaptcha.execute(siteKey, { action: 'login' }).then(function(t) { token = t; }); });">
+    <form wire:submit.prevent="register" class="flex flex-col gap-6" x-data="{ siteKey: @js(config('services.recaptcha.public_key')), token: '' }" x-init="grecaptcha.ready(() => {
+            $el.addEventListener('submit', (e) => {
+                e.preventDefault();
+                grecaptcha.execute(siteKey, { action: 'register' }).then(t => {
+                    token = t;
+                    $wire.recaptcha_token = t;
+                    $wire.register(); // trigger Livewire after token is set
+                });
+            });
+        })">
         <!-- Name -->
         <flux:input
             wire:model="name"

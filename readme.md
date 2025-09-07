@@ -42,6 +42,18 @@ cp .env.example .env
 # 4. Generate app key
 php artisan key:generate
 
+# 5. Connect MySQL database
+change DB_CONNECTION=sqlite to DB_CONNECTION=mysql
+uncomment:
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+
+add database credential
+
+
 # 5. Run migrations
 php artisan migrate --seed
 
