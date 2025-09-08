@@ -9,6 +9,8 @@ use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Volt\Component;
+use App\Rules\Recaptcha;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     #[Locked]
@@ -16,6 +18,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
+
+    /**
+     * Recaptcha Token
+     */
+    public $recaptcha_token;
 
     /**
      * Mount the component.
@@ -36,6 +43,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'token' => ['required'],
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'recaptcha_token' => ['required', new Recaptcha]
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -59,10 +67,26 @@ new #[Layout('components.layouts.auth')] class extends Component {
         if ($status != Password::PasswordReset) {
             $this->addError('email', __($status));
 
+            LivewireAlert::title('Error')
+            ->text($status)
+            ->error()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000) // Dismisses after 3 seconds
+            ->show();
+
             return;
         }
 
         Session::flash('status', __($status));
+
+        LivewireAlert::title('Success')
+        ->text($status)
+        ->success()
+        ->toast()
+        ->position('top-end')
+        ->timer(3000) // Dismisses after 3 seconds
+        ->show();
 
         $this->redirectRoute('login', navigate: true);
     }
@@ -74,7 +98,16 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="resetPassword" class="flex flex-col gap-6">
+    <form wire:submit.prevent="resetPassword" class="flex flex-col gap-6" x-data="{ siteKey: @js(config('services.recaptcha.public_key')), token: '' }" x-init="grecaptcha.ready(() => {
+            $el.addEventListener('submit', (e) => {
+                e.preventDefault();
+                grecaptcha.execute(siteKey, { action: 'resetPassword' }).then(t => {
+                    token = t;
+                    $wire.recaptcha_token = t;
+                    $wire.resetPassword(); // trigger Livewire after token is set
+                });
+            });
+        })">
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -110,6 +143,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
             placeholder="Confirm password"
         />
 
+        <!-- Recaptcha Field -->
+        <input type="hidden" x-model="token" x-effect="$wire.recaptcha_token = token">
+
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
                 {{ __('Reset password') }}
@@ -117,3 +153,4 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
     </form>
 </div>
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.public_key') }}"></script>

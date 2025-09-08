@@ -3,9 +3,16 @@
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Rules\Recaptcha;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     public string $email = '';
+
+    /**
+     * Recaptcha Token
+     */
+    public $recaptcha_token;
 
     /**
      * Send a password reset link to the provided email address.
@@ -14,9 +21,18 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {
         $this->validate([
             'email' => ['required', 'string', 'email'],
+            'recaptcha_token' => ['required', new Recaptcha]
         ]);
 
         Password::sendResetLink($this->only('email'));
+
+        LivewireAlert::title('Success')
+        ->text('A reset link will be sent if the account exists.')
+        ->success()
+        ->toast()
+        ->position('top-end')
+        ->timer(3000) // Dismisses after 3 seconds
+        ->show();
 
         session()->flash('status', __('A reset link will be sent if the account exists.'));
     }

@@ -8,6 +8,7 @@ use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use App\Rules\Recaptcha;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     public string $name = '';
@@ -36,10 +37,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         event(new Registered(($user = User::create($validated))));
 
+        LivewireAlert::title('Success')
+        ->text('Registration Successfull! Redirecting to Dashboard...')
+        ->success()
+        ->toast()
+        ->position('top-end')
+        ->timer(3000) // Dismisses after 3 seconds
+        ->show();
+
         // Assign default Role to the new user
         $user->assignRole('User');
         // Auto Login User
         Auth::login($user);
+
 
         $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
