@@ -1,7 +1,7 @@
 # 🚀 LaraKickStarter  
 
-[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?logo=laravel)](https://laravel.com/)  
-[![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?logo=php)](https://www.php.net/)  
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?logo=laravel)](https://laravel.com/)  
+[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php)](https://www.php.net/)  
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)  
 
 LaraKickStarter is a modern **Laravel starter kit** designed to help developers quickly bootstrap new projects with best practices, clean architecture, and pre-configured features.  
