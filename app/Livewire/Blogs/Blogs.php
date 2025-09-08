@@ -10,6 +10,7 @@ use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Tools\Permission;
+use Flux\Flux;
 
 
 class Blogs extends Component
@@ -19,6 +20,10 @@ class Blogs extends Component
     protected $queryString = ['keyword'];
     public $keyword = '';
     public $searchQuery = '';
+
+    public $blogTitle = '';
+    public $blogContent = '';
+    public $blogImage = '';
 
 
     public function render()
@@ -30,6 +35,16 @@ class Blogs extends Component
                         ->orWhere("content","LIKE","%". $this->keyword ."%")
                         ->paginate(10);
         return view('livewire.blogs.index', compact('blogs'));
+    }
+
+    public function show($id){
+       
+        $blog = Blog::findOrFail($id);
+        $this->blogTitle = $blog->title;
+        $this->blogContent = $blog->content;
+        $this->blogImage = $blog->image;
+        
+        Flux::modal("show-blog")->show();
     }
 
     // Ask for delete confirmation

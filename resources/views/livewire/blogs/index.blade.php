@@ -60,6 +60,9 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
+
+                                        <flux:button icon="eye" size="sm" variant="primary" color="green" wire:click="show({{ $blog->id }})"></flux:button>
+
                                         @can($permission->format('edit','blog'))
                                             <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('blogs.edit', $blog->id) }}"></flux:button>
                                         @endcan
@@ -78,4 +81,15 @@
             </div>
         </div>
     </div>
+    <flux:modal name="show-blog" class="lg">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">{{ $blogTitle }}</flux:heading>
+            </div>
+            <flux:separator />
+            <flux:text class="mt-2">{{ $blogContent }}</flux:text>
+            <flux:separator />
+            <div><img src="{{asset('uploads/' .$blogImage)  }}" alt="{{ $blogTitle }}"></div>
+        </div>
+    </flux:modal>
 </div>

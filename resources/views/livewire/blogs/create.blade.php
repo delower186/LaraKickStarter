@@ -33,7 +33,9 @@
                 </flux:field>
                 <flux:field>
                     <flux:label>Content</flux:label>
-                    <flux:textarea placeholder="Enter Content" rows="8" wire:model="content" type="text" />
+                    <div wire:ignore>
+                        <textarea id="content" placeholder="Enter Content" rows="8" wire:model="content"></textarea>
+                    </div>
                     <flux:error name="content" />
                 </flux:field>
                 <flux:field>
@@ -66,4 +68,25 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.tiny.cloud/1/h4hlvoep56m1e6s4tu7q57tr3lhrmcc0744uwxu92aidjhln/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('tinymce-updated', (content) => {
+            tinymce.get('content').setContent(content);
+        });
+    });
+
+    tinymce.init({
+        selector: '#content',
+        plugins: 'lists link code',
+        toolbar: 'undo redo | bold italic | bullist numlist | code',
+        setup: function (editor) {
+            editor.on('change', function () {
+                @this.set('content', editor.getContent());
+            });
+        }
+    });
+</script>
+
 
