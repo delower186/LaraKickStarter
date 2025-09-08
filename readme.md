@@ -81,3 +81,11 @@ Please add the following lines to your `.env` file and fill them with your Googl
 RECAPTCHA_PUBLIC_KEY=
 RECAPTCHA_SECRET_KEY=
 ```
+
+### 🔐 TinyMCE Editor Setup  
+
+Please add the following lines to your `.env` file and fill them with your TinyMCE API Key to enable TinyMCE editor on blog Create & Edit forms:
+
+```dotenv
+TINYMCE_API_KEY=
+```

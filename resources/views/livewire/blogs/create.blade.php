@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.tiny.cloud/1/h4hlvoep56m1e6s4tu7q57tr3lhrmcc0744uwxu92aidjhln/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+<script src="https://cdn.tiny.cloud/1/{{ config('services.tinymce.api_key') }}/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
 
 <script>
     document.addEventListener('livewire:initialized', () => {
