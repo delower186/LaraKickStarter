@@ -31,13 +31,15 @@
                         <th scope="col" class="px-6 py-3">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
+                        @can($permission->format('edit','blog'))
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
-                    @can($permission->format('create','blog'))
+                    @can($permission->format('view','blog'))
                         @if ($blogs->isNotEmpty())
                             @foreach ($blogs as $blog)
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -58,7 +60,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        @can($permission->format('update','blog'))
+                                        @can($permission->format('edit','blog'))
                                             <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('blogs.edit', $blog->id) }}"></flux:button>
                                         @endcan
                                         @can($permission->format('delete', 'blog'))
