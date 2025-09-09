@@ -87,7 +87,7 @@
                 <flux:heading size="lg">{{ $blogTitle }}</flux:heading>
             </div>
             <flux:separator />
-            <flux:text class="mt-2">{{ $blogContent }}</flux:text>
+            <flux:text class="mt-2">{!! $blogContent !!}</flux:text>
             <flux:separator />
             <div><img src="{{asset('uploads/' .$blogImage)  }}" alt="{{ $blogTitle }}"></div>
         </div>

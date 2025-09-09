@@ -28,7 +28,7 @@ class Edit extends Component
 
     public function update()
     {
-        $this->authorize(Permission::format('update','category'), Category::class);
+        $this->authorize(Permission::format('edit','category'), Category::class);
 
         $this->validate([
             "title"=> "required|min:5",
@@ -69,7 +69,7 @@ class Edit extends Component
 
     public function render()
     {
-        $this->authorize(Permission::format('update','category'), Category::class);
+        $this->authorize(Permission::format('edit','category'), Category::class);
         return view('livewire.categories.edit');
     }
 }

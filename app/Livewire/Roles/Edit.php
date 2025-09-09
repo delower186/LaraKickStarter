@@ -28,7 +28,7 @@ class Edit extends Component
 
     public function update()
     {
-        $this->authorize(Perm::format('update','role'), Role::class);
+        $this->authorize(Perm::format('edit','role'), Role::class);
         $role = Role::findOrFail($this->id);
 
         $this->validate([
@@ -69,7 +69,7 @@ class Edit extends Component
 
     public function render()
     {
-        $this->authorize(Perm::format('update','role'), Role::class);
+        $this->authorize(Perm::format('edit','role'), Role::class);
         return view('livewire.roles.edit');
     }
 }

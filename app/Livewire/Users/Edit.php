@@ -27,7 +27,7 @@ class Edit extends Component
 
     public function update()
     {
-        $this->authorize(Permission::format('update','user'), User::class);
+        $this->authorize(Permission::format('edit','user'), User::class);
 
         $this->validate([
             "role"=> "required",
@@ -66,7 +66,7 @@ class Edit extends Component
 
     public function render()
     {
-        $this->authorize(Permission::format('update','user'), User::class);
+        $this->authorize(Permission::format('edit','user'), User::class);
         return view('livewire.users.edit');
     }
 }

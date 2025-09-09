@@ -42,7 +42,7 @@ class Edit extends Component
 
     public function update()
     {
-        $this->authorize(Permission::format('update','blog'), Blog::class);
+        $this->authorize(Permission::format('edit','blog'), Blog::class);
         $this->validate([
             "title"=> "required|min:5",
             "category"=>"required|string",
@@ -63,7 +63,7 @@ class Edit extends Component
 
         }else{
             DB::transaction(function () use ($blog) {
-                $blog->user_id = Auth::user()->id;
+                // $blog->user_id = Auth::user()->id;
                 $blog->category_id = (int)$this->category;
                 $blog->title = $this->title;
                 $blog->content = $this->content;
@@ -102,7 +102,7 @@ class Edit extends Component
 
     public function render()
     {
-        $this->authorize(Permission::format('update','blog'), Blog::class);
+        $this->authorize(Permission::format('edit','blog'), Blog::class);
         return view('livewire.blogs.edit');
     }
 }
