@@ -101,6 +101,8 @@ class DatabaseSeeder extends Seeder
             'permission.create',
             'permission.edit',
             'permission.delete',
+            'configuration.view',
+            'configuration.edit'
         ];
 
         foreach ($permissions as $key => $value) {

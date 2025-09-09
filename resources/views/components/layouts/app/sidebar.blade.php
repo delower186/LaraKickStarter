@@ -38,9 +38,11 @@
                         @endcan
                     </flux:navlist.group>
                 @endcan
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
+                @can($permission->format('view','configuration'))
+                    <flux:navlist.item icon="cog-8-tooth" :href="route('configuration')">
+                    {{ __('Configuration') }}
+                    </flux:navlist.item>
+                @endcan
             </flux:navlist>
 
             <!-- Desktop User Menu -->

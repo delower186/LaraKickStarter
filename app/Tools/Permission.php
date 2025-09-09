@@ -10,7 +10,7 @@ class Permission{
      * @var array
      * Resouces array element should be lower case singular
      */
-    public static $resources = ['blog','category','user','role','permission'];
+    public static $resources = ['blog','category','user','role','permission','configuration'];
 
     public static function format($permission,$resource)
     {
