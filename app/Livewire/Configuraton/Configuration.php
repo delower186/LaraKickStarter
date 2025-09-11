@@ -4,7 +4,6 @@ namespace App\Livewire\Configuraton;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Illuminate\Support\Facades\DB;
 use App\Tools\Permission;
@@ -23,6 +22,8 @@ class Configuration extends Component
 
     public function render()
     {
+        $this->authorize(Permission::format('view','configuration'), Config::class);
+
         $config = Config::first();
 
         $this->site_name = $config->site_name;
@@ -32,7 +33,9 @@ class Configuration extends Component
         return view('livewire.configuraton.configuration');
     }
 
-    public function updateSiteName(){
+    public function updateSiteName()
+    {
+        $this->authorize(Permission::format('edit','configuration'), Config::class);
         
         $this->validate([
             "site_name" => "required|min:5",
@@ -57,7 +60,9 @@ class Configuration extends Component
         return redirect()->back();
     }
 
-    public function updateSiteLogo(){
+    public function updateSiteLogo()
+    {
+        $this->authorize(Permission::format('edit','configuration'), Config::class);
         
         $this->validate([
             "logo"      => "required|image|mimes:png,jpg,jpeg|max:2048",
@@ -93,8 +98,10 @@ class Configuration extends Component
 
     }
 
-    public function updateSiteFavicon(){
-        
+    public function updateSiteFavicon()
+    {
+        $this->authorize(Permission::format('edit','configuration'), Config::class);
+
         $this->validate([
             "favicon"   => "required|mimes:ico|max:2048",
         ]);

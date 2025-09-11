@@ -93,7 +93,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <a href="{{ route('dashboard') }}" class="ml-1 flex items-center space-x-2" wire:navigate>
-                <x-app-logo />
+                <img src="{{ asset('uploads/'.$config->logo) }}" alt="Dashboard Logo" class="h-10">
             </a>
 
             <flux:navlist variant="outline">
