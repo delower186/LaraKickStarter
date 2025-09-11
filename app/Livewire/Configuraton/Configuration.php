@@ -27,86 +27,103 @@ class Configuration extends Component
 
         $this->site_name = $config->site_name;
         $this->logoPreview = asset("uploads/".$config->logo);
-        $this->faviconPreview = asset("uploads/".$config->favicon);
+        $this->faviconPreview = asset($config->favicon);
 
         return view('livewire.configuraton.configuration');
     }
 
-    public function update(){
+    public function updateSiteName(){
         
         $this->validate([
-            "site_name"=> "required|min:5",
-            "logo"=> "nullable|image|mimes:png,jpg|max:2048",
-            "favicon"=> "nullable|mimes:ico|max:2048",
+            "site_name" => "required|min:5",
         ]);
 
-    
+        $config = Config::first();
+
+        DB::transaction(function () use ($config) {
+
+            $config->site_name = $this->site_name;
+            $config->save();
+        });
+
+        LivewireAlert::title('Success')
+            ->text('Site Name updated successfully!')
+            ->success()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
+
+        return redirect()->back();
+    }
+
+    public function updateSiteLogo(){
+        
+        $this->validate([
+            "logo"      => "required|image|mimes:png,jpg,jpeg|max:2048",
+        ]);
+
+        $config = Config::first();
+
         /**
          * @var mixed
          * Disk name 'uploads'
          * saved in blog folder within images folder
          * image file name @var $imageName
          */
-        // Logo
+        $logoName = "logo.". $this->logo->getClientOriginalExtension();
+        $logoSaveLocation = $this->logo->storeAs("images/logo", $logoName,'uploads');
 
-        $logoSaveLocation ='';
-        
-        if($this->logo instanceof TemporaryUploadedFile){
-            $logoName = "logo" .".". $this->logo->getClientOriginalExtension();
+        DB::transaction(function () use ($logoSaveLocation, $config) {
 
-            // Path of the old file on the 'uploads' disk
-            $oldFilePath = 'images/logo/' . $logoName; // adjust accordingly
-
-            if (Storage::disk('uploads')->exists($oldFilePath)) {
-                Storage::disk('uploads')->delete($oldFilePath);
-            }
-
-            $logoSaveLocation = $this->logo->storeAs("images/logo", $logoName,'uploads');
-        }
-        // Favicon
-
-        $faviconSaveLocation = '';
-
-        if($this->favicon instanceof TemporaryUploadedFile){
-            $faviconName = 'favicon.ico'; // fixed name
-
-            if(File::exists(public_path('favicon.ico'))) {
-                File::delete(public_path('favicon.ico'));
-            }
-
-            $faviconSaveLocation = public_path('/favicon.ico'); // save directly in public
-
-            // Move the uploaded file to public/
-            $this->favicon->move(public_path(), $faviconName);
-        }
-
-        
-        $config = Config::first();
-
-        DB::transaction(function () use ($logoSaveLocation, $faviconSaveLocation, $config) {
-
-            if($config->site_name != $this->site_name) {
-                $config->site_name = $this->site_name;
-            }
-
-            if($logoSaveLocation && $logoSaveLocation != '') {
-                $config->logo = $logoSaveLocation;
-            }
-
-            if($faviconSaveLocation && $faviconSaveLocation != '') {
-                $config->favicon = $faviconSaveLocation;
-            }
-            
+            $config->logo = $logoSaveLocation;
             $config->save();
         });
 
         LivewireAlert::title('Success')
-        ->text('Configuration Updated successfully!')
-        ->success()
-        ->toast()
-        ->position('top-end')
-        ->timer(3000) // Dismisses after 3 seconds
-        ->show();
+            ->text('Logo updated successfully!')
+            ->success()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
+
+        return redirect()->back();
+
+
+    }
+
+    public function updateSiteFavicon(){
+        
+        $this->validate([
+            "favicon"   => "required|mimes:ico|max:2048",
+        ]);
+
+        $config = Config::first();
+
+        $faviconName = 'favicon.ico'; // fixed name
+
+        if(File::exists(public_path('favicon.ico'))) {
+            File::delete(public_path('favicon.ico'));
+        }
+
+
+        // Move the uploaded file to public/
+        $this->favicon->storeAs('', $faviconName, 'public_root');
+
+        DB::transaction(function () use ($faviconName, $config) {
+
+            $config->favicon = $faviconName;
+            $config->save();
+        });
+
+        LivewireAlert::title('Success')
+            ->text('Favicon updated successfully!')
+            ->success()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
 
         return redirect()->back();
     }

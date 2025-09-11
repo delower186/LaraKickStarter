@@ -5,19 +5,24 @@
     <flux:separator />
     <div class="mt-3 ml-3 mr-3 mb-3">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <form class="mt-3 ml-3 mr-3 mb-3 space-y-3" wire:submit="update">
+            <form class="mt-3 ml-3 mr-3 mb-3 space-y-3" wire:submit="updateSiteName">
                 <flux:field>
                     <flux:label>Site Name</flux:label>
                     <flux:input placeholder="Enter Site Name" wire:model="site_name" type="text" />
                     <flux:error name="site_name" />
                 </flux:field>
+                <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" type="submit" icon="document-plus">Update Site name</flux:button>
+            </form>
+            <flux:separator />
+
+            <form class="mt-3 ml-3 mr-3 mb-3 space-y-3" wire:submit="updateSiteLogo">
                 <flux:field>
                     <flux:label>Logo</flux:label>
                     <flux:input wire:model="logo" type="file" />
                     <flux:error name="logo" />
                 </flux:field>
                 <flux:separator />
-                <div class="mb-6">
+                <div class="mb-2">
                     <div class="grid grid-cols-2 gap-6 items-start">
                         <!-- Column 1: Existing Logo -->
                         <div>
@@ -53,14 +58,18 @@
                         </div>
                     </div>
                 </div>
-                <flux:separator />
+                <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" type="submit" icon="document-plus">Update Logo</flux:button>
+            </form>
+            <flux:separator />
+
+            <form class="mt-3 ml-3 mr-3 mb-3 space-y-3" wire:submit="updateSiteFavicon">
                 <flux:field>
                     <flux:label>Favicon Icon</flux:label>
                     <flux:input wire:model="favicon" type="file" />
                     <flux:error name="favicon" />
                 </flux:field>
                 <flux:separator />
-                <div class="mb-6">
+                <div class="mb-2">
                     <div class="grid grid-cols-2 gap-6 items-start">
                         <!-- Column 1: Existing Logo -->
                         <div>
@@ -96,8 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <flux:separator />
-                <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" type="submit" icon="document-plus">Update</flux:button>
+                <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" type="submit" icon="document-plus">Update Favicon</flux:button>
             </form>
         </div>
     </div>

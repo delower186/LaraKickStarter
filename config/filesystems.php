@@ -34,6 +34,13 @@ return [
             'driver' => 'local',
             'root'   => public_path() . '/uploads',
         ],
+        // custom disk added by delower
+        'public_root' => [
+            'driver' => 'local',
+            'root' => public_path(),      // <--- writes directly into /public
+            'url' => env('APP_URL'),
+            'visibility' => 'public',
+        ],
 
         'local' => [
             'driver' => 'local',

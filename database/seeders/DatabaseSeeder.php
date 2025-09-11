@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\Blog;
+use App\Models\Configuration;
 use App\Models\Category;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -130,5 +130,13 @@ class DatabaseSeeder extends Seeder
 
         // Category::factory()->count(15)->create();
         // Blog::factory()->count(25)->create();
+
+        Configuration::create([
+            'site_name' => 'LaraKickStarter',
+            'logo' => 'images/logo/logo.png',
+            'favicon' => 'favicon.ico',
+        ]);
+
+
     }
 }
