@@ -18,13 +18,15 @@ use App\Livewire\Users\Edit as EditUser;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
+use App\Http\Controllers\Dashboard\DashboardController;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('dashboard')->group(function () {
         // Roles
