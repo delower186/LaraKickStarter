@@ -17,9 +17,9 @@
                     </flux:navlist.group>
                     @can($permission->format('view','blog'))
                         <flux:navlist.group expandable heading="CMS" class="hidden lg:grid">
-                            <flux:navlist.item icon="pencil-square" :href="route('blogs.index')" :current="request()->routeIs('blogs.index')" wire:navigate>{{ __('Blogs') }}</flux:navlist.item>
+                            <flux:navlist.item icon="pencil-square" :href="route('blogs.list')" :current="request()->routeIs('blogs.list')" wire:navigate>{{ __('Blogs') }}</flux:navlist.item>
                             @can($permission->format('view','category'))
-                                <flux:navlist.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.index')" wire:navigate>{{ __('Categories') }}</flux:navlist.item>
+                                <flux:navlist.item icon="tag" :href="route('categories.list')" :current="request()->routeIs('categories.list')" wire:navigate>{{ __('Categories') }}</flux:navlist.item>
                             @endcan
                         </flux:navlist.group>
                     @endcan
@@ -29,12 +29,12 @@
             <flux:navlist variant="outline">
                 @can($permission->format('view','user'))
                     <flux:navlist.group expandable heading="Users" class="hidden lg:grid">
-                        <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.index')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
+                        <flux:navlist.item icon="users" :href="route('users.list')" :current="request()->routeIs('users.list')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
                         @can($permission->format('view','role'))
-                            <flux:navlist.item icon="academic-cap" :href="route('roles.index')" :current="request()->routeIs('roles.index')" wire:navigate>{{ __('Roles') }}</flux:navlist.item>
+                            <flux:navlist.item icon="academic-cap" :href="route('roles.list')" :current="request()->routeIs('roles.list')" wire:navigate>{{ __('Roles') }}</flux:navlist.item>
                         @endcan
                         @can($permission->format('view','permission'))
-                            <flux:navlist.item icon="key" :href="route('permissions.index')" :current="request()->routeIs('permissions.index')" wire:navigate>{{ __('Permissions') }}</flux:navlist.item>
+                            <flux:navlist.item icon="key" :href="route('permissions.list')" :current="request()->routeIs('permissions.list')" wire:navigate>{{ __('Permissions') }}</flux:navlist.item>
                         @endcan
                     </flux:navlist.group>
                 @endcan

@@ -43,6 +43,6 @@ class Create extends Component
         ->show();
 
 
-        return redirect()->route('permissions.index');
+        return redirect()->route('permissions.list');
     }
 }

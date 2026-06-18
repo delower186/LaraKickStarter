@@ -40,7 +40,7 @@ class Create extends Component
         ->show();
 
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.list');
     }
 
     public function render()

@@ -56,7 +56,7 @@ class Roles extends Component
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
 
-        return redirect()->route("roles.index");
+        return redirect()->route("roles.list");
     }
 
     public function search()
@@ -87,6 +87,6 @@ class Roles extends Component
     public function refresh()
     {
         $this->authorize(Permission::format('view','role'), Role::class);
-        return redirect()->route("roles.index");
+        return redirect()->route("roles.list");
     }
 }

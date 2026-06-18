@@ -82,7 +82,7 @@ class Blogs extends Component
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
 
-        return redirect()->route("blogs.index");
+        return redirect()->route("blogs.list");
     }
 
     public function search()
@@ -112,6 +112,6 @@ class Blogs extends Component
     public function refresh()
     {
         $this->authorize(Permission::format('view','blog'), Blog::class);
-        return redirect()->route("blogs.index");
+        return redirect()->route("blogs.list");
     }
 }

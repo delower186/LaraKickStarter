@@ -54,7 +54,7 @@ class Edit extends Component
             ->timer(3000) // Dismisses after 3 seconds
             ->show();
 
-            return redirect()->route('permissions.index');
+            return redirect()->route('permissions.list');
         }
 
     }

@@ -62,7 +62,7 @@ class Edit extends Component
             ->timer(3000) // Dismisses after 3 seconds
             ->show();
 
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.list');
         }
 
     }

@@ -72,7 +72,7 @@
                                             <flux:badge color="green">Published</flux:badge>
                                         @endif
                                     </td> --}}
-                                    <td class="px-6 py-4">
+                                    <td class="px-3 py-3">
                                         @if ($role->name === 'Super Admin')
                                             <flux:badge color="red" icon="exclamation-circle" size="sm">NONE</flux:badge>
                                         @else

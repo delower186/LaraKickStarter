@@ -64,7 +64,7 @@ class Create extends Component
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
 
-        return redirect()->route('blogs.index');
+        return redirect()->route('blogs.list');
     }
 
     public function render()

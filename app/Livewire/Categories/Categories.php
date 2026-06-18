@@ -59,7 +59,7 @@ class Categories extends Component
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
 
-        return redirect()->route("categories.index");
+        return redirect()->route("categories.list");
     }
 
     public function search()
@@ -92,6 +92,6 @@ class Categories extends Component
     {
         $this->authorize(Permission::format('view','category'), Category::class);
 
-        return redirect()->route("categories.index");
+        return redirect()->route("categories.list");
     }
 }

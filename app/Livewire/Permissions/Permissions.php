@@ -60,7 +60,7 @@ class Permissions extends Component
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
 
-        return redirect()->route("permissions.index");
+        return redirect()->route("permissions.list");
     }
 
     public function search()
@@ -93,6 +93,6 @@ class Permissions extends Component
     {
         $this->authorize(Perm::format('view','permission'), Permission::class);
 
-        return redirect()->route("permissions.index");
+        return redirect()->route("permissions.list");
     }
 }
