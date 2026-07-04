@@ -6,6 +6,13 @@ use App\Livewire\Blogs\Edit;
 use App\Livewire\Categories\Categories;
 use App\Livewire\Categories\Create as CreateCategory;
 use App\Livewire\Categories\Edit as EditCategory;
+use App\Livewire\Courses\Courses;
+use App\Livewire\Courses\Create as CreateCourse;
+use App\Livewire\Courses\Edit as EditCourse;
+
+use App\Livewire\CCategories\CCategories;
+use App\Livewire\CCategories\Create as CreateCCategory;
+use App\Livewire\CCategories\Edit as EditCCategory;
 use App\Livewire\Configuraton\Configuration;
 use App\Livewire\Roles\Roles;
 use App\Livewire\Roles\Create as CreateRole;
@@ -45,6 +52,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/categories',Categories::class)->name('categories.list');
         Route::get('/categories/create',CreateCategory::class)->name('categories.create');
         Route::get('/categories/{id}/edit',EditCategory::class)->name('categories.edit');
+
+
+        // Courses
+        Route::get('/courses', Courses::class)->name('courses.list');
+        Route::get('/courses/create', CreateCourse::class)->name('courses.create');
+        Route::get('/courses/{id}/edit', EditCourse::class)->name('courses.edit');
+        // Course Categories
+        Route::get('/ccategories', CCategories::class)->name('ccategories.list');
+        Route::get('/ccategories/create', CreateCCategory::class)->name('ccategories.create');
+        Route::get('/ccategories/{id}/edit', EditCCategory::class)->name('ccategories.edit');
+
         // Users
         Route::get('/users',Users::class)->name('users.list');
         Route::get('/users/{id}/edit',EditUser::class)->name('users.edit');

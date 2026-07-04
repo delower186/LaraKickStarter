@@ -24,6 +24,16 @@
                         </flux:navlist.group>
                     @endcan
                 </flux:navlist>
+                <flux:navlist variant="outline">
+                    @can($permission->format('view','blog'))
+                        <flux:navlist.group expandable heading="LMS" class="hidden lg:grid">
+                            <flux:navlist.item icon="pencil-square" :href="route('courses.list')" :current="request()->routeIs('courses.list')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
+                            @can($permission->format('view','category'))
+                                <flux:navlist.item icon="tag" :href="route('ccategories.list')" :current="request()->routeIs('ccategories.list')" wire:navigate>{{ __('CCategories') }}</flux:navlist.item>
+                            @endcan
+                        </flux:navlist.group>
+                    @endcan
+                </flux:navlist>
             <flux:spacer />
 
             <flux:navlist variant="outline">
