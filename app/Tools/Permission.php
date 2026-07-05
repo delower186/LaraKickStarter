@@ -10,25 +10,21 @@ class Permission{
      * @var array
      * Resouces array element should be lower case singular
      */
-    public static $resources = ['blog','category','user','role','permission','configuration'];
 
-    public static function format($permission,$resource)
+    public static function format($permission, $resource)
     {
-        $permissionFormatted = '';
-        $permission = strtolower($permission);
-        $resource = strtolower($resource);
-        $resources = array_map('strtolower', self::$resources);
+        $permission = strtolower(trim($permission));
+        $resource = strtolower(trim($resource));
 
-        if (in_array($resource, $resources)) {
-            $permissionFormatted = $resource.".". $permission;
+        $permissionFormatted = "{$resource}.{$permission}";
 
+
+        if (Perm::where('name', $permissionFormatted)->exists()) {
             return $permissionFormatted;
-        }else{
-            abort(404);
         }
 
-        if (!in_array($permissionFormatted, Perm::all()->pluck("name")->toArray())) {
-            abort(404);
-        }
+        throw new \InvalidArgumentException(
+            "Permission '{$permissionFormatted}' does not exist."
+        );
     }
 }

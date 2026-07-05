@@ -76,4 +76,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Category::class);
     }
+
+    /**
+     * Get the courses for the user.
+     */
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    /**
+     * Get the course categories for the user.
+     */
+    public function ccategories(): HasMany
+    {
+        return $this->hasMany(CourseCategory::class);
+    }
 }

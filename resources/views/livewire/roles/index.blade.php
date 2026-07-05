@@ -76,7 +76,7 @@
                                         @if ($role->name === 'Super Admin')
                                             <flux:badge color="red" icon="exclamation-circle" size="sm">NONE</flux:badge>
                                         @else
-                                            @can($permission->format('update', 'role'))
+                                            @can($permission->format('edit', 'role'))
                                                 <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('roles.edit', $role->id) }}"></flux:button>
                                             @endcan
                                             @can($permission->format('delete', 'role'))

@@ -17,7 +17,7 @@
                     </flux:navlist.group>
                     @can($permission->format('view','blog'))
                         <flux:navlist.group expandable heading="CMS" class="hidden lg:grid">
-                            <flux:navlist.item icon="pencil-square" :href="route('blogs.list')" :current="request()->routeIs('blogs.list')" wire:navigate>{{ __('Blogs') }}</flux:navlist.item>
+                            <flux:navlist.item icon="book-open" :href="route('blogs.list')" :current="request()->routeIs('blogs.list')" wire:navigate>{{ __('Blogs') }}</flux:navlist.item>
                             @can($permission->format('view','category'))
                                 <flux:navlist.item icon="tag" :href="route('categories.list')" :current="request()->routeIs('categories.list')" wire:navigate>{{ __('Categories') }}</flux:navlist.item>
                             @endcan
@@ -25,10 +25,10 @@
                     @endcan
                 </flux:navlist>
                 <flux:navlist variant="outline">
-                    @can($permission->format('view','blog'))
+                    @can($permission->format('view','course'))
                         <flux:navlist.group expandable heading="LMS" class="hidden lg:grid">
-                            <flux:navlist.item icon="pencil-square" :href="route('courses.list')" :current="request()->routeIs('courses.list')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
-                            @can($permission->format('view','category'))
+                            <flux:navlist.item icon="academic-cap" :href="route('courses.list')" :current="request()->routeIs('courses.list')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
+                            @can($permission->format('view','ccategory'))
                                 <flux:navlist.item icon="tag" :href="route('ccategories.list')" :current="request()->routeIs('ccategories.list')" wire:navigate>{{ __('CCategories') }}</flux:navlist.item>
                             @endcan
                         </flux:navlist.group>

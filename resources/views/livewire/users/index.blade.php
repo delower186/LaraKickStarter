@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @can($permission->format('view', 'role'))
+                    @can($permission->format('view', 'user'))
                         @if ($users->isNotEmpty())
                             @foreach ($users as $user)
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -69,10 +69,10 @@
                                     @foreach ($user->roles as $role)
                                         @if ($role->name !== 'Super Admin')
                                             <td class="px-6 py-4">
-                                                @can($permission->format('update', 'role'))
+                                                @can($permission->format('edit', 'user'))
                                                     <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('users.edit', $user->id) }}"></flux:button>
                                                 @endcan
-                                                @can($permission->format('delete', 'role'))
+                                                @can($permission->format('delete', 'user'))
                                                     <flux:button size="sm" variant="danger" icon="trash" wire:click="confirm({{ $user->id }})"></flux:button>
                                                 @endcan
                                             </td>

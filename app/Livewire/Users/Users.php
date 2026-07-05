@@ -17,7 +17,9 @@ class Users extends Component
 
     public function render()
     {
-        $this->authorize(Permission::format('view','user'), User::class);
+        
+        //$this->authorize(Permission::format('view','user'), User::class);
+
 
         $users = User::orderBy("id","DESC")
         ->where("name","LIKE","%". $this->keyword ."%")
@@ -57,7 +59,7 @@ class Users extends Component
         ->timer(3000) // Dismisses after 3 seconds
         ->show();
 
-        return redirect()->route("users.index");
+        return redirect()->route("users.list");
     }
 
     public function search()
@@ -90,6 +92,6 @@ class Users extends Component
     {
         $this->authorize(Permission::format('view','user'), User::class);
 
-        return redirect()->route("users.index");
+        return redirect()->route("users.list");
     }
 }

@@ -58,7 +58,7 @@
                                         @endif
                                     </td> --}}
                                     <td class="px-6 py-4">
-                                        @can($permission->format('update', 'permission'))
+                                        @can($permission->format('edit', 'permission'))
                                             <flux:button size="sm" variant="primary" icon="pencil-square" wire:navigate href="{{ route('permissions.edit', $perm->id) }}"></flux:button>
                                         @endcan
                                         @can($permission->format('delete', 'permission'))
