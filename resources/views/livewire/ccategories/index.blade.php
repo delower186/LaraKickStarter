@@ -1,8 +1,8 @@
 <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
     <div class="flex justify-between mb-3">
-        <h1 class="ml-5 mt-5 text-3xl font-bold mb-5">Categories</h1>
+        <h1 class="ml-5 mt-5 text-3xl font-bold mb-5">Course Categories</h1>
         @can($permission->format('create', 'ccategory'))
-            <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" wire:navigate href="categories/create" icon="plus-circle">Create Category</flux:button>
+            <flux:button variant="primary" class="mr-5 mt-5 text-3xl font-bold mb-5" wire:navigate href="ccategories/create" icon="plus-circle">Create CCategory</flux:button>
         @endcan
     </div>
     <flux:separator />
